@@ -1,13 +1,19 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import authOperation from '../../redux/authOperations';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import { selectIsLoggedIn } from 'redux/authSlice';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+
+  if (isLoggedIn) {
+    return <Navigate to="/contacts" />;
+  }
 
   const handleChange = e => {
     const { name, value } = e.currentTarget;
@@ -32,7 +38,6 @@ function LoginForm() {
   const handleSubmit = async e => {
     e.preventDefault();
     dispatch(authOperation.logIn({ email, password }));
-    navigate('/contacts');
     reset();
   };
 
