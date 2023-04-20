@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {register} from 'redux/authOperations';
+import authOperation from 'redux/authOperations';
 
 function RegistrationForm() {
   const dispatch = useDispatch();
@@ -42,7 +42,7 @@ function RegistrationForm() {
 
     console.log('email :>> ', email);
     console.log('password :>> ', password);
-    dispatch(register({ name, email, password }));
+    dispatch(authOperation.register({ name, email, password }));
     // console.log('confirmPassword :>> ', confirmPassword);
     console.log('registrationForm submit');
     reset();

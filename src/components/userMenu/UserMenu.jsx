@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUserName } from 'redux/authSlice';
-import { logOut } from '../../redux/authOperations';
+import authOperation from '../../redux/authOperations';
 import { useNavigate } from 'react-router-dom';
 
 function UserMenu() {
@@ -11,7 +11,7 @@ function UserMenu() {
 
   const handleClick = async () => {
     try {
-      await dispatch(logOut());
+      await dispatch(authOperation.logOut());
       navigate('/');
     } catch (error) {
       console.log(error);

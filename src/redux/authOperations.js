@@ -12,7 +12,7 @@ const token = {
   },
 };
 
-export const register = createAsyncThunk('auth/register', async credentials => {
+const register = createAsyncThunk('auth/register', async credentials => {
   try {
     const { data } = await axios.post('/users/signup', credentials);
     console.log('data :>> ', data);
@@ -23,7 +23,7 @@ export const register = createAsyncThunk('auth/register', async credentials => {
   }
 });
 
-export const logIn = createAsyncThunk('auth/login', async credentials => {
+const logIn = createAsyncThunk('auth/login', async credentials => {
   try {
     const { data } = await axios.post('/users/login', credentials);
     console.log('data :>> ', data);
@@ -34,7 +34,7 @@ export const logIn = createAsyncThunk('auth/login', async credentials => {
   }
 });
 
-export const logOut = createAsyncThunk('auth/logout', async () => {
+const logOut = createAsyncThunk('auth/logout', async () => {
   try {
     await axios.post('/users/logout');
     token.unset();
@@ -42,3 +42,30 @@ export const logOut = createAsyncThunk('auth/logout', async () => {
     console.log('this is error with logOut AsyncThunck');
   }
 });
+
+const fetchRefreshUser = createAsyncThunk(
+  'auth/refresh',
+  async (_, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const persistedToken = state.auth.token;
+
+    if (persistedToken === null) {
+      return thunkAPI.rejectWithValue();
+    }
+    token.set(persistedToken);
+    try {
+      const { data } = await axios.get('/users/current');
+      return data;
+    } catch (error) {
+      console.log('error in fetchRefreshUser :>> ', error);
+    }
+  }
+);
+
+const authOperation = {
+  register,
+  logIn,
+  logOut,
+  fetchRefreshUser,
+};
+export default authOperation;

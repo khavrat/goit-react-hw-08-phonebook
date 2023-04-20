@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { selectIsLoggedIn } from '../redux/authSlice';
+import { selectIsLoggedIn } from 'redux/authSlice';
 // import ContactForm from './contactForm/ContactForm';
 import ContactsPage from '../pages/ContactsPage/Contacts';
-import LockContactsPage from '../pages/ContactsPage/LockContacts'
+import LockContactsPage from '../pages/ContactsPage/LockContacts';
 // import ContactList from './contactList/ContactList';
 // import ContactFilter from './contactFilter/ContactFilter';
 // import {
@@ -20,16 +19,16 @@ import SharedLayout from './sharedLayout/SharedLayout';
 import HomePage from '../pages/HomePage/Home';
 import LoginForm from './loginForm/LoginForm';
 import RegistrationForm from './registrationForm/RegistrationForm';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import authOperation from 'redux/authOperations';
 
 export function App() {
+  const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
-  const navigate = useNavigate();
+
   useEffect(() => {
-    if (isLoggedIn) {
-      navigate('/contacts')
-    }
-  }, [isLoggedIn, navigate]);
+    dispatch(authOperation.fetchRefreshUser());
+  }, [dispatch]);
 
   return (
     <Routes>
@@ -39,9 +38,9 @@ export function App() {
         <Route path="/login" element={<LoginForm />}></Route>
         {isLoggedIn ? (
           <Route path="/contacts" element={<ContactsPage />} />
-        ) : (
-          <Route path="/contacts" element={<LockContactsPage />} />
-        )}
+         ) : ( 
+          <Route path="/contacts" element={<LockContactsPage />} /> 
+         )} 
       </Route>
       <Route path="*" element={<div>Not found</div>} />
     </Routes>

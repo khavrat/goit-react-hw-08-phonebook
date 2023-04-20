@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { logIn } from '../../redux/authOperations';
+import authOperation from '../../redux/authOperations';
 import { useNavigate } from 'react-router-dom';
 
 function LoginForm() {
@@ -31,7 +31,7 @@ function LoginForm() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    dispatch(logIn({ email, password }));
+    dispatch(authOperation.logIn({ email, password }));
     navigate('/contacts');
     reset();
   };
