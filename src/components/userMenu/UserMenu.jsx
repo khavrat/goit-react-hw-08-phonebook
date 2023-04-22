@@ -1,13 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUserName } from 'redux/authSlice';
-import authOperation from '../../redux/authOperations';
+import { selectUserName } from 'redux/auth/authSlice';
+import authOperation from '../../redux/auth/authOperations';
 import { useNavigate } from 'react-router-dom';
 
 function UserMenu() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-    const name = useSelector(selectUserName);
-
+  const name = useSelector(selectUserName);
 
   const handleClick = async () => {
     try {

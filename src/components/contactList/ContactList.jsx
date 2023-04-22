@@ -1,12 +1,9 @@
-import {
-  ContactSet,
-  ContactElement,
-  ContactElSpan,
-  ContactBtn,
-} from './ContactList.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectContacts, selectFilter } from '../../redux/contactsSlice';
-import { removeContactAsync } from 'redux/contactsAPI';
+import {
+  selectContacts,
+  selectFilter,
+} from '../../redux/contacts/contactsSlice';
+import { removeContactAsync } from 'redux/contacts/contactsOperations';
 import { toast } from 'react-toastify';
 
 function ContactList() {
@@ -34,27 +31,28 @@ function ContactList() {
 
     return contacts.filter(
       contact =>
-        contact && contact.name &&
-          contact.name.toLowerCase().includes(normalizedFilter)
-        )
+        contact &&
+        contact.name &&
+        contact.name.toLowerCase().includes(normalizedFilter)
+    );
   };
   // const contactsList = visibleContacts();
-const contactsList = Array.isArray(contacts) ? visibleContacts() : [];
+  const contactsList = Array.isArray(contacts) ? visibleContacts() : [];
   return (
-    <ContactSet>
+    <ul>
       {contactsList.map(visibleContact => (
-        <ContactElement key={visibleContact.id}>
-          <ContactElSpan>{visibleContact.name}:</ContactElSpan>
-          <ContactElSpan>{visibleContact.phone}</ContactElSpan>
-          <ContactBtn
+        <li key={visibleContact.id}>
+          <span>{visibleContact.name}:</span>
+          <span>{visibleContact.phone}</span>
+          <button
             type="button"
             onClick={() => onDeleteContact(visibleContact.id)}
           >
             delete{' '}
-          </ContactBtn>
-        </ContactElement>
+          </button>
+        </li>
       ))}
-    </ContactSet>
+    </ul>
   );
 }
 

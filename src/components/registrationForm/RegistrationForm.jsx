@@ -1,6 +1,9 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import authOperation from 'redux/authOperations';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import authOperation from 'redux/auth/authOperations';
+import { selectIsLoggedIn } from '../../redux/auth/authSlice';
+import { toast } from 'react-toastify';
 
 function RegistrationForm() {
   const dispatch = useDispatch();
@@ -8,6 +11,14 @@ function RegistrationForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   //   const [confirmPassword, setConfirmPassword] = useState('');
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      return navigate('/contacts');
+    }
+  }, [isLoggedIn, navigate]);
 
   const handleChange = e => {
     const { name, value } = e.currentTarget;
@@ -37,15 +48,22 @@ function RegistrationForm() {
     // setConfirmPassword('');
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-
-    console.log('email :>> ', email);
-    console.log('password :>> ', password);
-    dispatch(authOperation.register({ name, email, password }));
+    try {
+      const statusData = await dispatch(
+        authOperation.register({ name, email, password })
+      );
+      if (statusData.error!==null) {
+        toast.error(statusData.payload);
+        reset();
+      } else {
+        reset();
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
     // console.log('confirmPassword :>> ', confirmPassword);
-    console.log('registrationForm submit');
-    reset();
   };
 
   return (

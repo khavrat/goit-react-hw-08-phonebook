@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import authOperation from '../../redux/authOperations';
-import { Navigate } from 'react-router-dom';
-import { selectIsLoggedIn } from 'redux/authSlice';
+import authOperation from '../../redux/auth/authOperations';
+import { useNavigate } from 'react-router-dom';
+import { selectIsLoggedIn } from 'redux/auth/authSlice';
+import Loader from 'components/loader/Loader';
+import { toast } from 'react-toastify';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
@@ -10,10 +12,13 @@ function LoginForm() {
 
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const navigate = useNavigate();
 
-  if (isLoggedIn) {
-    return <Navigate to="/contacts" />;
-  }
+  useEffect(() => {
+    if (isLoggedIn) {
+      return navigate('/contacts');
+    }
+  }, [isLoggedIn, navigate]);
 
   const handleChange = e => {
     const { name, value } = e.currentTarget;
@@ -37,13 +42,23 @@ function LoginForm() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    dispatch(authOperation.logIn({ email, password }));
-    reset();
+    try {
+      const statusData = await dispatch(
+        authOperation.logIn({ email, password })
+      );
+      if (statusData !== null) {
+        toast.error(statusData.payload);
+        reset();
+      } else {
+        reset();
+      }
+    } catch (error) {
+      console.log(error.message)
+    }
   };
 
   return (
-    <section>
-      {' '}
+    <Loader>
       <h1>Log in</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">Email</label>
@@ -68,7 +83,7 @@ function LoginForm() {
         />
         <button type="submit">Log in</button>
       </form>
-    </section>
+    </Loader>
   );
 }
 

@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addContactAsync } from '../../redux/contactsAPI';
-// import { toast } from 'react-toastify';
-import { Form, FormInput, FormLabel, FormBtn } from './ContactForm.styled';
+import { addContactAsync } from '../../redux/contacts/contactsOperations';
+import { toast } from 'react-toastify';
 
 function ContactForm() {
   const [name, setName] = useState('');
@@ -33,24 +32,20 @@ function ContactForm() {
     e.preventDefault();
     try {
       const statusData = await dispatch(addContactAsync({ name, number }));
-      console.log('statusData handleSubmit:>> ', statusData);
-
       if (statusData.error) {
-        console.log('error :>> ', statusData.error);
-        // toast.error(statusData.payload);
+        toast.error(statusData.payload);
       } else {
         reset();
-        // toast.success(`${statusData.payload.name} has been added successfully`);
+        toast.success(`${statusData.payload.name} has been added successfully`);
       }
     } catch (error) {
-      // toast.error(error.message);
     }
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <FormLabel htmlFor="name">name</FormLabel>
-      <FormInput
+    <form onSubmit={handleSubmit}>
+      <label htmlFor="name">name</label>
+      <input
         className="input"
         type="text"
         name="name"
@@ -60,8 +55,8 @@ function ContactForm() {
         onChange={handleChange}
         required
       />
-      <FormLabel htmlFor="number">number</FormLabel>
-      <FormInput
+      <label htmlFor="number">number</label>
+      <input
         className="input"
         type="tel"
         name="number"
@@ -71,10 +66,9 @@ function ContactForm() {
         onChange={handleChange}
         required
       />
-      <FormBtn type="submit">add contact</FormBtn>
-    </Form>
+      <button type="submit">add contact</button>
+    </form>
   );
 }
 
 export default ContactForm;
-

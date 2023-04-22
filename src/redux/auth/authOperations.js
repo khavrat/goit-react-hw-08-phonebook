@@ -12,34 +12,43 @@ const token = {
   },
 };
 
-const register = createAsyncThunk('auth/register', async credentials => {
+const register = createAsyncThunk('auth/register', async (credentials, {rejectWithValue}) => {
   try {
     const { data } = await axios.post('/users/signup', credentials);
-    console.log('data :>> ', data);
     token.set(data.token);
     return data;
   } catch (error) {
-    console.log('this is error with register AsyncThunck');
+    if (error.response && error.response.status === 400) {
+     return rejectWithValue(
+       'Such user already exists or fields are incorrectly filled'
+     );
+   }
+    return rejectWithValue(null);
   }
 });
 
-const logIn = createAsyncThunk('auth/login', async credentials => {
-  try {
-    const { data } = await axios.post('/users/login', credentials);
-    console.log('data :>> ', data);
-    token.set(data.token);
-    return data;
-  } catch (error) {
-    console.log('this is error with logIn AsyncThunck');
+const logIn = createAsyncThunk(
+  'auth/login',
+  async (credentials, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post('/users/login', credentials);
+      token.set(data.token);
+      return data;
+    } catch (error) {
+    if (error.response && error.response.status === 400) {
+      return rejectWithValue('Incorrect login or password');
+    }
+    return rejectWithValue(null);
+    }
   }
-});
+);
 
 const logOut = createAsyncThunk('auth/logout', async () => {
   try {
     await axios.post('/users/logout');
     token.unset();
   } catch (error) {
-    console.log('this is error with logOut AsyncThunck');
+    console.log(error.message);
   }
 });
 
@@ -57,7 +66,7 @@ const fetchRefreshUser = createAsyncThunk(
       const { data } = await axios.get('/users/current');
       return data;
     } catch (error) {
-      console.log('error in fetchRefreshUser :>> ', error);
+      console.log(error.message);
     }
   }
 );

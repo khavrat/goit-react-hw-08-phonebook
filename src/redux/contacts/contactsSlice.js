@@ -3,7 +3,7 @@ import {
   fetchContactsAsync,
   addContactAsync,
   removeContactAsync,
-} from './contactsAPI';
+} from './contactsOperations';
 
 const contactsSlice = createSlice({
   name: 'contacts',
@@ -51,9 +51,9 @@ const contactsSlice = createSlice({
       .addCase(removeContactAsync.fulfilled, (state, action) => {
         state.contacts.isLoading = false;
         const index = state.contacts.items.findIndex(
-          contact =>contact.id===action.payload.id
+          contact => contact.id === action.payload.id
         );
-        if (index!==-1) {
+        if (index !== -1) {
           state.contacts.items.splice(index, 1);
         }
       })

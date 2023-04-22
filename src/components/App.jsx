@@ -1,15 +1,17 @@
-import { useEffect } from 'react';
-import ContactsPage from '../pages/ContactsPage/Contacts';
-// import { ToastContainer } from 'react-toastify';
+import React, { useEffect } from 'react';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Route, Routes } from 'react-router-dom';
 import SharedLayout from './sharedLayout/SharedLayout';
-import HomePage from '../pages/HomePage/Home';
-import LoginForm from './loginForm/LoginForm';
-import RegistrationForm from './registrationForm/RegistrationForm';
 import { useDispatch } from 'react-redux';
-import authOperation from 'redux/authOperations';
-import PrivateRoute from './userMenu/PrivateRoute';
+import authOperation from 'redux/auth/authOperations';
+import PrivateRoute from './navigation/PrivateRoute';
+import { lazy } from 'react';
+
+const HomePage = lazy(() => import('../pages/HomePage/HomePage'));
+const RegisterPage = lazy(() => import('../pages/RegisterPage/RegisterPage'));
+const LoginPage = lazy(() => import('../pages/LoginPage/LoginPage'));
+const ContactsPage = lazy(() => import('../pages/ContactsPage/ContactsPage'));
 
 export function App() {
   const dispatch = useDispatch();
@@ -19,17 +21,21 @@ export function App() {
   }, [dispatch]);
 
   return (
-    <Routes>
-      <Route path="/" element={<SharedLayout />}>
-        <Route index element={<HomePage />}></Route>
-        <Route path="/register" element={<RegistrationForm />}></Route>
-        <Route path="/login" element={<LoginForm />}></Route>
-        <Route path="/contacts" element={<PrivateRoute />}>
-          <Route path="/contacts" element={<ContactsPage />} />
+    <>
+      <ToastContainer />
+      {' '}
+      <Routes>
+        <Route path="/" element={<SharedLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/contacts" element={<PrivateRoute />}>
+            <Route path="/contacts" element={<ContactsPage />} />
+          </Route>
+          <Route path="*" element={<div>Not found</div>} />
         </Route>
-      </Route>
-      <Route path="*" element={<div>Not found</div>} />
-    </Routes>
+      </Routes>
+    </>
   );
 }
 
