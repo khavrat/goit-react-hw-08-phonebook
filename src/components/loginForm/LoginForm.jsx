@@ -5,10 +5,23 @@ import { useNavigate } from 'react-router-dom';
 import { selectIsLoggedIn } from 'redux/auth/authSlice';
 import Loader from 'components/loader/Loader';
 import { toast } from 'react-toastify';
+import {
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  Input,
+  Button,
+  InputGroup,
+  InputRightElement,
+} from '@chakra-ui/react';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isEmailError, setIsEmailError] = useState(false);
+  const [isPasswordError, setIsPasswordError] = useState(false);
+    const [show, setShow] = useState(false);
 
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -25,9 +38,11 @@ function LoginForm() {
     switch (name) {
       case 'email':
         setEmail(value);
+        setIsEmailError(false);
         break;
       case 'password':
         setPassword(value);
+        setIsPasswordError(false);
         break;
       default:
         console.log('input value: error');
@@ -36,52 +51,106 @@ function LoginForm() {
   };
 
   const reset = () => {
-    setEmail('');
-    setPassword('');
+    if (isEmailError) {
+      setEmail('');
+    }
+    if (isPasswordError) {
+      setPassword('');
+    }
+    if (!isEmailError && !isPasswordError) {
+      setEmail('');
+      setPassword('');
+    }
+  };
+
+  const handleErrorByBlureEmail = e => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{3,}$/;
+    setIsEmailError(!emailRegex.test(email));
+  };
+
+  const handleErrorByBlurePassword = e => {
+    const passwordRegex = /^(?=.*\d).{6,}$/;
+    setIsPasswordError(!passwordRegex.test(password));
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
-    try {
-      const statusData = await dispatch(
-        authOperation.logIn({ email, password })
-      );
-      if (statusData !== null) {
-        toast.error(statusData.payload);
-        reset();
-      } else {
-        reset();
+    handleErrorByBlureEmail();
+    handleErrorByBlurePassword();
+    reset();
+
+    if (!isEmailError && !isPasswordError) {
+      try {
+        const statusData = await dispatch(
+          authOperation.logIn({ email, password })
+        );
+        if (statusData !== null) {
+          toast.error(statusData.payload);
+          reset();
+        } else {
+          reset();
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error.message)
     }
   };
 
+  const handleClick = () => setShow(!show);
+
   return (
     <Loader>
-      <h1>Log in</h1>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          name="email"
-          value={email}
-          autoComplete="off"
-          onChange={handleChange}
-          required
-        />
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          name="password"
-          value={password}
-          pattern="^(?=.*\d).{6,}$"
-          title="Password must have at least 6 characters and at least one digit"
-          autoComplete="off"
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">Log in</button>
+        <FormControl isRequired isInvalid={isEmailError || isPasswordError}>
+          <FormLabel htmlFor="email">Email</FormLabel>
+          <Input
+            type="email"
+            placeholder="Enter email"
+            name="email"
+            value={email}
+            id="email-login"
+            autoComplete="off"
+            onChange={handleChange}
+            required
+            isInvalid={isEmailError}
+            onBlur={handleErrorByBlureEmail}
+          />
+          {!isEmailError ? (
+            <FormHelperText>Enter the email</FormHelperText>
+          ) : (
+            <FormErrorMessage>Email is required</FormErrorMessage>
+          )}
+          <FormLabel htmlFor="password">Password</FormLabel>
+          <InputGroup>
+            <Input
+              pr="4.5rem"
+              type={show ? 'text' : 'password'}
+              placeholder="Enter password"
+              // type="password"
+              name="password"
+              value={password}
+              id="password-login"
+              autoComplete="off"
+              onChange={handleChange}
+              required
+              isInvalid={isPasswordError}
+              onBlur={handleErrorByBlurePassword}
+            />
+            <InputRightElement width="4.5rem">
+              <Button h="1.75rem" size="sm" onClick={handleClick}>
+                {show ? 'Hide' : 'Show'}
+              </Button>
+            </InputRightElement>{' '}
+          </InputGroup>
+          {!isPasswordError ? (
+            <FormHelperText>
+              Password must have at least 6 characters and at least one digit
+            </FormHelperText>
+          ) : (
+            <FormErrorMessage>Password is required.</FormErrorMessage>
+          )}
+          <Button type="submit">Log in</Button>
+        </FormControl>
       </form>
     </Loader>
   );

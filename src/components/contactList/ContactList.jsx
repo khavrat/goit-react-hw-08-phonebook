@@ -5,6 +5,7 @@ import {
 } from '../../redux/contacts/contactsSlice';
 import { removeContactAsync } from 'redux/contacts/contactsOperations';
 import { toast } from 'react-toastify';
+import { CloseButton } from '@chakra-ui/react';
 
 function ContactList() {
   const contacts = useSelector(selectContacts);
@@ -42,14 +43,14 @@ function ContactList() {
     <ul>
       {contactsList.map(visibleContact => (
         <li key={visibleContact.id}>
-          <span>{visibleContact.name}:</span>
-          <span>{visibleContact.phone}</span>
-          <button
+          {visibleContact.name}:
+          {visibleContact.number}
+          <CloseButton
+            size="md"
             type="button"
             onClick={() => onDeleteContact(visibleContact.id)}
           >
-            delete{' '}
-          </button>
+          </CloseButton>
         </li>
       ))}
     </ul>

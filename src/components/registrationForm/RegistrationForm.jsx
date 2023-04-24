@@ -4,13 +4,24 @@ import { useNavigate } from 'react-router-dom';
 import authOperation from 'redux/auth/authOperations';
 import { selectIsLoggedIn } from '../../redux/auth/authSlice';
 import { toast } from 'react-toastify';
+import {
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  Input,
+  Button,
+} from '@chakra-ui/react';
 
 function RegistrationForm() {
-  const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  //   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isNameError, setIsNameError] = useState(false);
+  const [isEmailError, setIsEmailError] = useState(false);
+  const [isPasswordError, setIsPasswordError] = useState(false);
+
+  const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const navigate = useNavigate();
 
@@ -25,16 +36,16 @@ function RegistrationForm() {
     switch (name) {
       case 'name':
         setName(value);
+        setIsNameError(false);
         break;
       case 'email':
         setEmail(value);
+        setIsEmailError(false);
         break;
       case 'password':
         setPassword(value);
+        setIsPasswordError(false);
         break;
-      //   case 'confirmPassword':
-      //     setConfirmPassword(value);
-      //     break;
       default:
         console.log('input value: error');
         return;
@@ -42,76 +53,130 @@ function RegistrationForm() {
   };
 
   const reset = () => {
-    setName('');
-    setEmail('');
-    setPassword('');
-    // setConfirmPassword('');
+    if (isNameError) {
+      setName('');
+    }
+    if (isEmailError) {
+      setEmail('');
+    }
+    if (isPasswordError) {
+      setPassword('');
+    }
+    if (!isNameError && !isEmailError && !isPasswordError) {
+      setName('');
+      setEmail('');
+      setPassword('');
+    }
+  };
+
+  const handleErrorByBlureName = e => {
+    const nameRegex = /^[a-zA-Z\s-]{2,}$/;
+    setIsNameError(!nameRegex.test(name));
+  };
+
+  const handleErrorByBlureEmail = e => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{3,}$/;
+    setIsEmailError(!emailRegex.test(email));
+  };
+
+  const handleErrorByBlurePassword = e => {
+    const passwordRegex = /^(?=.*\d).{6,}$/;
+    setIsPasswordError(!passwordRegex.test(password));
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
-    try {
-      const statusData = await dispatch(
-        authOperation.register({ name, email, password })
-      );
-      if (statusData.error!==null) {
-        toast.error(statusData.payload);
-        reset();
-      } else {
-        reset();
+    handleErrorByBlureName();
+    handleErrorByBlureEmail();
+    handleErrorByBlurePassword();
+    reset();
+    console.log('isNameError :>> ', isNameError);
+    console.log('isEmailError :>> ', isEmailError);
+    console.log('isPasswordError :>> ', isPasswordError);
+    if (!isNameError && !isEmailError && !isPasswordError) {
+      try {
+        const statusData = await dispatch(
+          authOperation.register({ name, email, password })
+        );
+        if (statusData.error !== null) {
+          toast.error(statusData.payload);
+          reset();
+        } else {
+          reset();
+        }
+      } catch (error) {
+        console.log(error.message);
       }
-    } catch (error) {
-      console.log(error.message);
     }
-    // console.log('confirmPassword :>> ', confirmPassword);
   };
 
   return (
     <section>
-      <h1>Registration Form</h1>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Name</label>
-        <input
-          type="text"
-          name="name"
-          value={name}
-          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-          onChange={handleChange}
-          required
-        />
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          name="email"
-          value={email}
-          autoComplete="off"
-          onChange={handleChange}
-          required
-        />
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          name="password"
-          value={password}
-          pattern="^(?=.*\d).{6,}$"
-          title="Password must have at least 6 characters and at least one digit"
-          autoComplete="off"
-          onChange={handleChange}
-          required
-        />
-        {/* <label htmlFor="confirmPassword">Confirm Password</label>
-        <input
-          type="password"
-          name="confirmPassword"
-          value={confirmPassword}
-          pattern="^(?=.*\d).{6,}$"
-          title="Password must have at least 6 characters and at least one digit"
-          autoComplete="off"
-          onChange={handleChange}
-          required
-        /> */}
-        <button type="submit">Register</button>
+        <FormControl
+          isRequired
+          isInvalid={isNameError || isEmailError || isPasswordError}
+        >
+          <FormLabel htmlFor="name">Name</FormLabel>
+          <Input
+            type="text"
+            name="name"
+            value={name}
+            id="name-regist"
+            autoComplete="off"
+            onChange={handleChange}
+            required
+            isInvalid={isNameError}
+            onBlur={handleErrorByBlureName}
+          />
+          {!isNameError ? (
+            <FormHelperText>
+              The name can contain only letters, spaces and dashes and should be
+              at least 2 characters
+            </FormHelperText>
+          ) : (
+            <FormErrorMessage>Name is required</FormErrorMessage>
+          )}
+
+          <FormLabel htmlFor="email">Email</FormLabel>
+          <Input
+            type="email"
+            name="email"
+            value={email}
+            id="email-regist"
+            autoComplete="off"
+            onChange={handleChange}
+            required
+            isInvalid={isEmailError}
+            onBlur={handleErrorByBlureEmail}
+          />
+          {!isEmailError ? (
+            <FormHelperText>Enter the email</FormHelperText>
+          ) : (
+            <FormErrorMessage>Email is required</FormErrorMessage>
+          )}
+          <FormLabel htmlFor="password">Password</FormLabel>
+          <Input
+            type="password"
+            name="password"
+            value={password}
+            id="password-regist"
+            autoComplete="off"
+            onChange={handleChange}
+            required
+            isInvalid={isPasswordError}
+            onBlur={handleErrorByBlurePassword}
+          />
+          {!isPasswordError ? (
+            <FormHelperText>
+              Password must have at least 6 characters and at least one digit
+            </FormHelperText>
+          ) : (
+            <FormErrorMessage>Password is required</FormErrorMessage>
+          )}
+
+          <Button type="submit">Register</Button>
+        </FormControl>
       </form>
     </section>
   );

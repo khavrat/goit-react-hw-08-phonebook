@@ -2,7 +2,7 @@ import ContactForm from 'components/contactForm/ContactForm';
 import ContactFilter from 'components/contactFilter/ContactFilter';
 import ContactList from 'components/contactList/ContactList';
 import { useEffect } from 'react';
-import { fetchContactsAsync } from 'redux/contacts/contactsOperations';
+import { fetchContactsAsync } from '../../redux/contacts/contactsOperations';
 import { useDispatch } from 'react-redux';
 
 const ContactsPage = () => {
