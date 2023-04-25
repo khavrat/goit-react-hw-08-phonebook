@@ -5,7 +5,7 @@ import {
 } from '../../redux/contacts/contactsSlice';
 import { removeContactAsync } from 'redux/contacts/contactsOperations';
 import { toast } from 'react-toastify';
-import { Container, IconButton, Table, Tbody, Td, Tr } from '@chakra-ui/react';
+import { IconButton, Table, Tbody, Td, Tr } from '@chakra-ui/react';
 import { DeleteIcon, PhoneIcon } from '@chakra-ui/icons';
 
 function ContactList() {
