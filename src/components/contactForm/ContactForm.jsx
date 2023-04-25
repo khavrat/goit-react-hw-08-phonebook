@@ -7,10 +7,11 @@ import {
   Input,
   Button,
   InputGroup,
-  InputLeftElement, 
+  InputLeftElement,
+  Box,
+  FormLabel,
 } from '@chakra-ui/react';
-import { PhoneIcon, EditIcon } from '@chakra-ui/icons'
-
+import { PhoneIcon, EditIcon } from '@chakra-ui/icons';
 
 function ContactForm() {
   const [name, setName] = useState('');
@@ -48,54 +49,69 @@ function ContactForm() {
         reset();
         toast.success(`${statusData.payload.name} has been added successfully`);
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <FormControl>
-        {/* <FormLabel htmlFor="name">name</FormLabel> */}
-        <InputGroup>
-          <InputLeftElement
-            pointerEvents="none"
-            children={<EditIcon color="gray.400" />}
-          />
-          <Input
-            className="input"
-            type="text"
-            name="name"
-            value={name}
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            onChange={handleChange}
-            required
-            placeholder="Name contact"
-            size="md"
-          />
-        </InputGroup>
-        {/* <label htmlFor="number">number</label> */}
-        <InputGroup>
-          <InputLeftElement
-            pointerEvents="none"
-            children={<PhoneIcon color="gray.300" />}
-          />{' '}
-          <Input
-            className="input"
-            type="tel"
-            name="number"
-            value={number}
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            onChange={handleChange}
-            required
-            placeholder="Phone number"
-            size="md"
-          />
-        </InputGroup>
-        <Button type="submit">add contact</Button>
-      </FormControl>
-    </form>
+    <Box p="20px" bg="green.50" br="4px">
+      <form onSubmit={handleSubmit}>
+        <FormControl>
+          <FormLabel mt="50px" htmlFor="name" color="blue.700">
+            name
+          </FormLabel>
+          <InputGroup>
+            <InputLeftElement
+              pointerEvents="none"
+              children={<EditIcon color="gray.400" />}
+            />
+            <Input
+              bg="white"
+              className="input"
+              type="text"
+              name="name"
+              value={name}
+              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+              onChange={handleChange}
+              required
+              placeholder="Name contact"
+              size="md"
+            />
+          </InputGroup>
+          <FormLabel mt="50px" htmlFor="number" color="blue.700">
+            number
+          </FormLabel>
+          <InputGroup>
+            <InputLeftElement
+              pointerEvents="none"
+              children={<PhoneIcon color="gray.300" />}
+            />{' '}
+            <Input
+              bg="white"
+              className="input"
+              type="tel"
+              name="number"
+              value={number}
+              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+              onChange={handleChange}
+              required
+              placeholder="Phone number"
+              size="md"
+            />
+          </InputGroup>
+          <Button
+            type="submit"
+            mt="30px"
+            colorScheme="blue"
+            size="sm"
+            variant="outline"
+          >
+            add contact
+          </Button>
+        </FormControl>
+      </form>
+    </Box>
   );
 }
 

@@ -21,7 +21,7 @@ function LoginForm() {
   const [password, setPassword] = useState('');
   const [isEmailError, setIsEmailError] = useState(false);
   const [isPasswordError, setIsPasswordError] = useState(false);
-    const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false);
 
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -104,6 +104,7 @@ function LoginForm() {
         <FormControl isRequired isInvalid={isEmailError || isPasswordError}>
           <FormLabel htmlFor="email">Email</FormLabel>
           <Input
+            bg="white"
             type="email"
             placeholder="Enter email"
             name="email"
@@ -120,9 +121,12 @@ function LoginForm() {
           ) : (
             <FormErrorMessage>Email is required</FormErrorMessage>
           )}
-          <FormLabel htmlFor="password">Password</FormLabel>
+          <FormLabel mt="50px" htmlFor="password">
+            Password
+          </FormLabel>
           <InputGroup>
             <Input
+              bg="white"
               pr="4.5rem"
               type={show ? 'text' : 'password'}
               placeholder="Enter password"
@@ -147,9 +151,13 @@ function LoginForm() {
               Password must have at least 6 characters and at least one digit
             </FormHelperText>
           ) : (
-            <FormErrorMessage>Password is required.</FormErrorMessage>
+            <FormErrorMessage>
+              Password is not complete and it is required
+            </FormErrorMessage>
           )}
-          <Button type="submit">Log in</Button>
+          <Button mt="30px" type="submit" colorScheme="blue" size="sm">
+            Log in
+          </Button>
         </FormControl>
       </form>
     </Loader>

@@ -11,6 +11,8 @@ import {
   FormHelperText,
   Input,
   Button,
+  InputGroup,
+  InputRightElement,
 } from '@chakra-ui/react';
 
 function RegistrationForm() {
@@ -20,6 +22,8 @@ function RegistrationForm() {
   const [isNameError, setIsNameError] = useState(false);
   const [isEmailError, setIsEmailError] = useState(false);
   const [isPasswordError, setIsPasswordError] = useState(false);
+  const [show, setShow] = useState(false);
+
 
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -90,9 +94,6 @@ function RegistrationForm() {
     handleErrorByBlureEmail();
     handleErrorByBlurePassword();
     reset();
-    console.log('isNameError :>> ', isNameError);
-    console.log('isEmailError :>> ', isEmailError);
-    console.log('isPasswordError :>> ', isPasswordError);
     if (!isNameError && !isEmailError && !isPasswordError) {
       try {
         const statusData = await dispatch(
@@ -110,6 +111,8 @@ function RegistrationForm() {
     }
   };
 
+  const handleClick = () => setShow(!show);
+
   return (
     <section>
       <form onSubmit={handleSubmit}>
@@ -119,7 +122,9 @@ function RegistrationForm() {
         >
           <FormLabel htmlFor="name">Name</FormLabel>
           <Input
+            bg="white"
             type="text"
+            placeholder="Enter name"
             name="name"
             value={name}
             id="name-regist"
@@ -138,9 +143,13 @@ function RegistrationForm() {
             <FormErrorMessage>Name is required</FormErrorMessage>
           )}
 
-          <FormLabel htmlFor="email">Email</FormLabel>
+          <FormLabel mt="50px" htmlFor="email">
+            Email
+          </FormLabel>
           <Input
+            bg="white"
             type="email"
+            placeholder="Enter email"
             name="email"
             value={email}
             id="email-regist"
@@ -153,29 +162,49 @@ function RegistrationForm() {
           {!isEmailError ? (
             <FormHelperText>Enter the email</FormHelperText>
           ) : (
-            <FormErrorMessage>Email is required</FormErrorMessage>
+            <FormErrorMessage>
+              Email is not complete and it is required
+            </FormErrorMessage>
           )}
-          <FormLabel htmlFor="password">Password</FormLabel>
-          <Input
-            type="password"
-            name="password"
-            value={password}
-            id="password-regist"
-            autoComplete="off"
-            onChange={handleChange}
-            required
-            isInvalid={isPasswordError}
-            onBlur={handleErrorByBlurePassword}
-          />
+          <FormLabel mt="50px" htmlFor="password">
+            Password
+          </FormLabel>
+          <InputGroup>
+            {' '}
+            <Input
+              bg="white"
+              pr="4.5rem"
+              type={show ? 'text' : 'password'}
+              placeholder="Enter password"
+              // type="password"
+              name="password"
+              value={password}
+              id="password-regist"
+              autoComplete="off"
+              onChange={handleChange}
+              required
+              isInvalid={isPasswordError}
+              onBlur={handleErrorByBlurePassword}
+            />
+            <InputRightElement width="4.5rem">
+              <Button h="1.75rem" size="sm" onClick={handleClick}>
+                {show ? 'Hide' : 'Show'}
+              </Button>
+            </InputRightElement>{' '}
+          </InputGroup>
           {!isPasswordError ? (
             <FormHelperText>
               Password must have at least 6 characters and at least one digit
             </FormHelperText>
           ) : (
-            <FormErrorMessage>Password is required</FormErrorMessage>
+            <FormErrorMessage>
+              Password is not complete and it is required
+            </FormErrorMessage>
           )}
 
-          <Button type="submit">Register</Button>
+          <Button mt="30px" type="submit" colorScheme="blue" size="sm">
+            Register
+          </Button>
         </FormControl>
       </form>
     </section>

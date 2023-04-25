@@ -14,3 +14,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.nav-link.active {
+  border-bottom: 2px solid white;
+}
+
+.auth-link.active {
+  border-bottom: 2px solid #2B6CB0;
+  color: #2B6CB0;
+}
+
+

@@ -5,7 +5,8 @@ import {
 } from '../../redux/contacts/contactsSlice';
 import { removeContactAsync } from 'redux/contacts/contactsOperations';
 import { toast } from 'react-toastify';
-import { CloseButton } from '@chakra-ui/react';
+import { Container, IconButton, Table, Tbody, Td, Tr } from '@chakra-ui/react';
+import { DeleteIcon, PhoneIcon } from '@chakra-ui/icons';
 
 function ContactList() {
   const contacts = useSelector(selectContacts);
@@ -18,7 +19,7 @@ function ContactList() {
     const deletedContact = contacts.find(contact => contact.id === contactId);
     try {
       await dispatch(removeContactAsync(contactId));
-      toast.info(`🚀 ${deletedContact.name} has been deleted successfully`, {
+      toast.info(`${deletedContact.name} has been deleted successfully`, {
         delay: 250,
       });
     } catch (error) {
@@ -37,23 +38,41 @@ function ContactList() {
         contact.name.toLowerCase().includes(normalizedFilter)
     );
   };
-  // const contactsList = visibleContacts();
+
   const contactsList = Array.isArray(contacts) ? visibleContacts() : [];
+
   return (
-    <ul>
-      {contactsList.map(visibleContact => (
-        <li key={visibleContact.id}>
-          {visibleContact.name}:
-          {visibleContact.number}
-          <CloseButton
-            size="md"
-            type="button"
-            onClick={() => onDeleteContact(visibleContact.id)}
-          >
-          </CloseButton>
-        </li>
-      ))}
-    </ul>
+    <Table size="sm">
+      <Tbody>
+        {contactsList.map(visibleContact => (
+          <Tr key={visibleContact.id}>
+            <Td padding="16px 24px 16px 4px">{visibleContact.name}:</Td>
+            <Td padding="16px 24px 16px 4px">{visibleContact.number}</Td>
+            <Td padding="0">
+              <IconButton
+                as="a"
+                href={`tel:${visibleContact.number}`}
+                size="md"
+                bg="transparent"
+                color="blue.600"
+                aria-label="Phone"
+                icon={<PhoneIcon />}
+              />
+            </Td>
+            <Td padding="0">
+              <IconButton
+                size="md"
+                bg="transparent"
+                color="blue.600"
+                aria-label="Phone"
+                onClick={() => onDeleteContact(visibleContact.id)}
+                icon={<DeleteIcon />}
+              ></IconButton>
+            </Td>
+          </Tr>
+        ))}
+      </Tbody>
+    </Table>
   );
 }
 
