@@ -14,7 +14,9 @@ import {
   Button,
   InputGroup,
   InputRightElement,
+  useColorMode,
 } from '@chakra-ui/react';
+import { getInputColor } from '../colorModeSwitcher/ColorModeSwitch';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
@@ -26,6 +28,7 @@ function LoginForm() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const navigate = useNavigate();
+  const { colorMode } = useColorMode();
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -104,7 +107,7 @@ function LoginForm() {
         <FormControl isRequired isInvalid={isEmailError || isPasswordError}>
           <FormLabel htmlFor="email">Email</FormLabel>
           <Input
-            bg="white"
+            bg={getInputColor(colorMode)}
             type="email"
             placeholder="Enter email"
             name="email"
@@ -126,7 +129,7 @@ function LoginForm() {
           </FormLabel>
           <InputGroup>
             <Input
-              bg="white"
+              bg={getInputColor(colorMode)}
               pr="4.5rem"
               type={show ? 'text' : 'password'}
               placeholder="Enter password"

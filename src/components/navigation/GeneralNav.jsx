@@ -1,39 +1,45 @@
 import { EditIcon, ViewIcon } from '@chakra-ui/icons';
-import {
-  List,
-  ListIcon,
-  ListItem,
-} from '@chakra-ui/react';
+import { List, ListIcon, ListItem, useColorMode } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 import { selectIsLoggedIn } from 'redux/auth/authSlice';
+import { ColorModeSwitcher } from '../colorModeSwitcher/ColorModeSwitch';
+import { getSwitcherColor } from '../colorModeSwitcher/ColorModeSwitch';
+import {
+  getGeneralNavColor,
+  getGeneralNavActivLinkColor,
+} from '../colorModeSwitcher/ColorModeSwitch';
+import { NavLinkGeneralStyles } from '../navigation/StylesNav';
 
 const GeneralNav = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const { colorMode } = useColorMode();
+  const activeStyles = getGeneralNavActivLinkColor(colorMode);
 
   return (
     <nav>
-      <List
-        ml="20px"
-        color="white"
-        fontSize={{ base: '1em', md: '1.2em' }}
-        spacing={4}
-      >
-        <ListItem>
-          <NavLink to="/" activeclassname="active" className="nav-link">
+      <List sx={getGeneralNavColor(colorMode)}>
+        <ListItem mb="40px">
+          <ColorModeSwitcher sx={getSwitcherColor(colorMode)} />
+        </ListItem>
+        <ListItem m="0 0 20px 0">
+          <NavLinkGeneralStyles
+            to="/"
+            colormode={colorMode}
+            activeclassname={activeStyles}
+          >
             <ListIcon as={ViewIcon} color="white"></ListIcon>Main
-          </NavLink>
+          </NavLinkGeneralStyles>
         </ListItem>
         {isLoggedIn && (
-          <ListItem>
-            <NavLink
+          <ListItem m="10px 0">
+            <NavLinkGeneralStyles
               to="/contacts"
-              activeclassname="active"
-              className="nav-link"
+              colormode={colorMode}
+              activeclassname={activeStyles}
             >
               <ListIcon as={EditIcon} color="white"></ListIcon>
               Contacts
-            </NavLink>
+            </NavLinkGeneralStyles>
           </ListItem>
         )}
       </List>

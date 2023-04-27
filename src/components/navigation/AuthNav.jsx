@@ -1,27 +1,37 @@
-import { Flex, List, ListItem } from '@chakra-ui/react';
-import { NavLink } from 'react-router-dom';
+import { Flex, List, ListItem, useColorMode } from '@chakra-ui/react';
 import Loader from '../loader/Loader';
+import {NavLinkAuthStyles} from '../navigation/StylesNav'
+import {
+  getAuthNavColor,
+  getAuthNavActivLinkColor,
+} from '../colorModeSwitcher/ColorModeSwitch';
 
 export default function AuthNav() {
+  const { colorMode } = useColorMode()
+  const activeStyles=getAuthNavActivLinkColor(colorMode)
+
   return (
     <Loader>
-      <List>
-        {' '}
+      <List sx={getAuthNavColor(colorMode)}>
         <Flex as="nav" p="10px" alignItems="center" gap="30px">
           <ListItem>
-            <NavLink to="/login" activeclassname="active" className="auth-link">
+            <NavLinkAuthStyles
+              to="/login"
+              colormode={colorMode}
+              activeclassname={activeStyles}
+            >
               Log In
-            </NavLink>
+            </NavLinkAuthStyles>
           </ListItem>
-          <li>
-            <NavLink
+          <ListItem>
+            <NavLinkAuthStyles
               to="/register"
-              activeclassname="active"
-              className="auth-link"
+              colormode={colorMode}
+              activeclassname={activeStyles}
             >
               Registration
-            </NavLink>
-          </li>
+            </NavLinkAuthStyles>
+          </ListItem>
         </Flex>
       </List>
     </Loader>

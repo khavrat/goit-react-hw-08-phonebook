@@ -10,14 +10,21 @@ import {
   InputLeftElement,
   Box,
   FormLabel,
+  useColorMode,
 } from '@chakra-ui/react';
 import { PhoneIcon, EditIcon } from '@chakra-ui/icons';
+import { getInputColor } from '../colorModeSwitcher/ColorModeSwitch';
+import {
+  getContactFieldColor,
+  getElementsColor,
+} from '../colorModeSwitcher/ColorModeSwitch';
 
 function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
   const dispatch = useDispatch();
+  const { colorMode } = useColorMode();
 
   const handleChange = e => {
     const { name, value } = e.currentTarget;
@@ -53,10 +60,14 @@ function ContactForm() {
   };
 
   return (
-    <Box p="20px" bg="green.50" br="4px">
+    <Box p="20px" bg={getContactFieldColor(colorMode)} borderRadius="10px">
       <form onSubmit={handleSubmit}>
         <FormControl>
-          <FormLabel mt="50px" htmlFor="name" color="blue.700">
+          <FormLabel
+            mt="50px"
+            htmlFor="name"
+            color={getElementsColor(colorMode)}
+          >
             name
           </FormLabel>
           <InputGroup>
@@ -65,8 +76,8 @@ function ContactForm() {
               children={<EditIcon color="gray.400" />}
             />
             <Input
-              bg="white"
-              className="input"
+              bg={getInputColor(colorMode)}
+              // className="input"
               type="text"
               name="name"
               value={name}
@@ -78,7 +89,11 @@ function ContactForm() {
               size="md"
             />
           </InputGroup>
-          <FormLabel mt="50px" htmlFor="number" color="blue.700">
+          <FormLabel
+            mt="50px"
+            htmlFor="number"
+            color={getElementsColor(colorMode)}
+          >
             number
           </FormLabel>
           <InputGroup>
@@ -87,8 +102,8 @@ function ContactForm() {
               children={<PhoneIcon color="gray.300" />}
             />{' '}
             <Input
-              bg="white"
-              className="input"
+              bg={getInputColor(colorMode)}
+              // className="input"
               type="tel"
               name="number"
               value={number}
@@ -100,13 +115,7 @@ function ContactForm() {
               size="md"
             />
           </InputGroup>
-          <Button
-            type="submit"
-            mt="30px"
-            colorScheme="blue"
-            size="sm"
-            variant="outline"
-          >
+          <Button type="submit" mt="30px" colorScheme="blue" size="sm">
             add contact
           </Button>
         </FormControl>

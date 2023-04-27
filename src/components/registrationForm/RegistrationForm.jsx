@@ -13,7 +13,9 @@ import {
   Button,
   InputGroup,
   InputRightElement,
+  useColorMode,
 } from '@chakra-ui/react';
+import { getInputColor } from '../colorModeSwitcher/ColorModeSwitch';
 
 function RegistrationForm() {
   const [name, setName] = useState('');
@@ -24,10 +26,10 @@ function RegistrationForm() {
   const [isPasswordError, setIsPasswordError] = useState(false);
   const [show, setShow] = useState(false);
 
-
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const navigate = useNavigate();
+  const { colorMode } = useColorMode();
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -122,7 +124,7 @@ function RegistrationForm() {
         >
           <FormLabel htmlFor="name">Name</FormLabel>
           <Input
-            bg="white"
+            bg={getInputColor(colorMode)}
             type="text"
             placeholder="Enter name"
             name="name"
@@ -147,7 +149,7 @@ function RegistrationForm() {
             Email
           </FormLabel>
           <Input
-            bg="white"
+            bg={getInputColor(colorMode)}
             type="email"
             placeholder="Enter email"
             name="email"
@@ -172,11 +174,10 @@ function RegistrationForm() {
           <InputGroup>
             {' '}
             <Input
-              bg="white"
+              bg={getInputColor(colorMode)}
               pr="4.5rem"
               type={show ? 'text' : 'password'}
               placeholder="Enter password"
-              // type="password"
               name="password"
               value={password}
               id="password-regist"

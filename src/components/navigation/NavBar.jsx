@@ -11,7 +11,7 @@ export default function NavBar() {
     <Flex as="nav" p="30px" alignItems="center">
       <Spacer />
 
-      <HStack spacing="20px"> {isLoggedIn ? <UserMenu /> : <AuthNav />}</HStack>
+      <HStack> {isLoggedIn ? <UserMenu /> : <AuthNav />}</HStack>
     </Flex>
   );
 }

@@ -5,17 +5,24 @@ import {
 } from '../../redux/contacts/contactsSlice';
 import { removeContactAsync } from 'redux/contacts/contactsOperations';
 import { toast } from 'react-toastify';
-import { IconButton, Table, Tbody, Td, Tr } from '@chakra-ui/react';
+import {
+  IconButton,
+  Table,
+  Tbody,
+  Td,
+  Tr,
+  useColorMode,
+} from '@chakra-ui/react';
 import { DeleteIcon, PhoneIcon } from '@chakra-ui/icons';
+import { getElementsColor } from '../colorModeSwitcher/ColorModeSwitch';
 
 function ContactList() {
   const contacts = useSelector(selectContacts);
   const filter = useSelector(selectFilter);
   const dispatch = useDispatch();
-  console.log('filter ContactList:>> ', filter);
+  const { colorMode } = useColorMode();
 
   const onDeleteContact = async contactId => {
-    console.log('putdown to delete');
     const deletedContact = contacts.find(contact => contact.id === contactId);
     try {
       await dispatch(removeContactAsync(contactId));
@@ -29,7 +36,6 @@ function ContactList() {
 
   const visibleContacts = () => {
     const normalizedFilter = filter.toLowerCase();
-    console.log('contacts in visibleContacts ContactList :>> ', contacts);
 
     return contacts.filter(
       contact =>
@@ -48,25 +54,23 @@ function ContactList() {
           <Tr key={visibleContact.id}>
             <Td padding="16px 24px 16px 4px">{visibleContact.name}:</Td>
             <Td padding="16px 24px 16px 4px">{visibleContact.number}</Td>
-            <Td padding="0">
+            <Td padding="8px 0">
               <IconButton
                 as="a"
                 href={`tel:${visibleContact.number}`}
                 size="md"
                 bg="transparent"
-                color="blue.600"
                 aria-label="Phone"
-                icon={<PhoneIcon />}
+                icon={<PhoneIcon color={getElementsColor(colorMode)} />}
               />
             </Td>
-            <Td padding="0">
+            <Td padding="8px 0">
               <IconButton
                 size="md"
                 bg="transparent"
-                color="blue.600"
                 aria-label="Phone"
                 onClick={() => onDeleteContact(visibleContact.id)}
-                icon={<DeleteIcon />}
+                icon={<DeleteIcon color={getElementsColor(colorMode)} />}
               ></IconButton>
             </Td>
           </Tr>
