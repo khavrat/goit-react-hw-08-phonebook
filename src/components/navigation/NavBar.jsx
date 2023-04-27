@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Flex, HStack, Spacer } from '@chakra-ui/react';
 import UserMenu from 'components/userMenu/UserMenu';
 import { useSelector } from 'react-redux';
@@ -15,3 +16,7 @@ export default function NavBar() {
     </Flex>
   );
 }
+
+NavBar.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+};

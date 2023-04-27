@@ -14,7 +14,7 @@ import {
   useColorMode,
 } from '@chakra-ui/react';
 import { DeleteIcon, PhoneIcon } from '@chakra-ui/icons';
-import { getElementsColor } from '../colorModeSwitcher/ColorModeSwitch';
+import { getElementsColor } from '../colorModeSwitcher/ColorModeStyles';
 
 function ContactList() {
   const contacts = useSelector(selectContacts);

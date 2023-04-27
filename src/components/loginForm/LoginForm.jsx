@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import authOperation from '../../redux/auth/authOperations';
@@ -16,7 +17,7 @@ import {
   InputRightElement,
   useColorMode,
 } from '@chakra-ui/react';
-import { getInputColor } from '../colorModeSwitcher/ColorModeSwitch';
+import { getInputColor } from '../colorModeSwitcher/ColorModeStyles';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
@@ -133,7 +134,6 @@ function LoginForm() {
               pr="4.5rem"
               type={show ? 'text' : 'password'}
               placeholder="Enter password"
-              // type="password"
               name="password"
               value={password}
               id="password-login"
@@ -168,3 +168,8 @@ function LoginForm() {
 }
 
 export default LoginForm;
+
+LoginForm.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  navigate: PropTypes.func.isRequired,
+};

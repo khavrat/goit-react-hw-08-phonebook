@@ -18,7 +18,7 @@ const clockStylesDark = {
   maxWidth: { base: '200px', sm: '240px', md: '400px', lg: '500px' },
   height: { base: '200px', sm: '240px', md: '400px', lg: '500px' },
   background: 'linear-gradient(135deg, #BFBEBF 15.94%, #FFFFFF 85.31%)',
-  boxShadow: '6px 6px 10px #BEBEBF, -2px -2px 20px rgba(226, 225, 230, 0.25)',
+  boxShadow: '4px 4px 6px #BEBEBF, -2px -2px 20px rgba(226, 225, 230, 0.25)',
   backgroundImage: `url(${whiteClock})`,
   backgroundSize: 'cover',
 };

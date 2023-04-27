@@ -1,13 +1,14 @@
+import PropTypes from 'prop-types';
 import { EditIcon, ViewIcon } from '@chakra-ui/icons';
 import { List, ListIcon, ListItem, useColorMode } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import { selectIsLoggedIn } from 'redux/auth/authSlice';
-import { ColorModeSwitcher } from '../colorModeSwitcher/ColorModeSwitch';
-import { getSwitcherColor } from '../colorModeSwitcher/ColorModeSwitch';
+import { ColorModeSwitcher } from '../colorModeSwitcher/ColorModeSwitcher';
 import {
+  getSwitcherColor,
   getGeneralNavColor,
   getGeneralNavActivLinkColor,
-} from '../colorModeSwitcher/ColorModeSwitch';
+} from '../colorModeSwitcher/ColorModeStyles';
 import { NavLinkGeneralStyles } from '../navigation/StylesNav';
 
 const GeneralNav = () => {
@@ -48,3 +49,7 @@ const GeneralNav = () => {
 };
 
 export default GeneralNav;
+
+GeneralNav.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+};

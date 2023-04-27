@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addContactAsync } from '../../redux/contacts/contactsOperations';
@@ -13,11 +14,11 @@ import {
   useColorMode,
 } from '@chakra-ui/react';
 import { PhoneIcon, EditIcon } from '@chakra-ui/icons';
-import { getInputColor } from '../colorModeSwitcher/ColorModeSwitch';
+import { getInputColor } from '../colorModeSwitcher/ColorModeStyles';
 import {
   getContactFieldColor,
   getElementsColor,
-} from '../colorModeSwitcher/ColorModeSwitch';
+} from '../colorModeSwitcher/ColorModeStyles';
 
 function ContactForm() {
   const [name, setName] = useState('');
@@ -60,7 +61,7 @@ function ContactForm() {
   };
 
   return (
-    <Box p="20px" bg={getContactFieldColor(colorMode)} borderRadius="10px">
+    <Box p="20px" borderRadius="10px" bg={getContactFieldColor(colorMode)}>
       <form onSubmit={handleSubmit}>
         <FormControl>
           <FormLabel
@@ -77,7 +78,6 @@ function ContactForm() {
             />
             <Input
               bg={getInputColor(colorMode)}
-              // className="input"
               type="text"
               name="name"
               value={name}
@@ -103,7 +103,6 @@ function ContactForm() {
             />{' '}
             <Input
               bg={getInputColor(colorMode)}
-              // className="input"
               type="tel"
               name="number"
               value={number}

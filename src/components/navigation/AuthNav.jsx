@@ -1,14 +1,14 @@
 import { Flex, List, ListItem, useColorMode } from '@chakra-ui/react';
 import Loader from '../loader/Loader';
-import {NavLinkAuthStyles} from '../navigation/StylesNav'
+import { NavLinkAuthStyles } from '../navigation/StylesNav';
 import {
   getAuthNavColor,
   getAuthNavActivLinkColor,
-} from '../colorModeSwitcher/ColorModeSwitch';
+} from '../colorModeSwitcher/ColorModeStyles';
 
 export default function AuthNav() {
-  const { colorMode } = useColorMode()
-  const activeStyles=getAuthNavActivLinkColor(colorMode)
+  const { colorMode } = useColorMode();
+  const activeStyles = getAuthNavActivLinkColor(colorMode);
 
   return (
     <Loader>

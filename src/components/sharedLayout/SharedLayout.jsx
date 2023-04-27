@@ -1,12 +1,12 @@
 import NavBar from '../navigation/NavBar';
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
-import { Box, Grid, GridItem, useColorMode } from '@chakra-ui/react';
+import { Box, Grid, GridItem, useColorMode, Spinner } from '@chakra-ui/react';
 import GeneralNav from 'components/navigation/GeneralNav';
 import {
   getBackgroundColor,
   getBackgroundColorBase,
-} from 'components/colorModeSwitcher/ColorModeSwitch';
+} from 'components/colorModeSwitcher/ColorModeStyles';
 
 const SharedLayout = () => {
   const { colorMode } = useColorMode();
@@ -42,7 +42,7 @@ const SharedLayout = () => {
           <NavBar />
         </Box>
         <GridItem as="main">
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Spinner />}>
             <Outlet />
           </Suspense>
         </GridItem>

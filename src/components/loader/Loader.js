@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react';
 
 function Loader({ children }) {
@@ -11,3 +12,7 @@ function Loader({ children }) {
 }
 
 export default Loader;
+
+Loader.propTypes = {
+  children: PropTypes.node.isRequired,
+}

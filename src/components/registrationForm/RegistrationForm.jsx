@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +16,7 @@ import {
   InputRightElement,
   useColorMode,
 } from '@chakra-ui/react';
-import { getInputColor } from '../colorModeSwitcher/ColorModeSwitch';
+import { getInputColor } from '../colorModeSwitcher/ColorModeStyles';
 
 function RegistrationForm() {
   const [name, setName] = useState('');
@@ -213,3 +214,8 @@ function RegistrationForm() {
 }
 
 export default RegistrationForm;
+
+RegistrationForm.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  navigate: PropTypes.func.isRequired,
+};
