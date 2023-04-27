@@ -69,11 +69,11 @@ export const NavLinkAuthStyles = styled(NavLink)`
     background: ${props =>
       props.colormode === 'dark'
         ? 'linear-gradient(116.72deg, #12161D 0.92%, rgba(33, 41, 44, 0.99) 102.86%)'
-        : 'linear-gradient(105.24deg, #E9F1F7 -21.31%, rgba(255, 255, 255, 0.37) 117.37%)'};
+        : 'linear-gradient(94.45deg, rgba(221, 226, 228, 0.47) -23.58%, rgba(241, 247, 251, 0.38303) 15.25%, #FEFEFE 101.84%)'};
     box-shadow: ${props =>
       props.colormode === 'dark'
         ? 'inset -2px -2px 2px rgba(255, 255, 255, 0.15), inset 2px 2px 2px #000000'
-        : 'inset -2px -2px 2px #FFFFFF, inset 2px 2px 2px rgba(0, 0, 0, 0.15)'};
+        : 'inset 0px -2px 2px #FFFFFF, inset 2px 1px 2px #D4E1E8'};
   }
 `;
 

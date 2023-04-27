@@ -86,8 +86,7 @@ export const getAuthNavActivLinkColor = colorMode => {
       }
     : {
         background:
-          'linear-gradient(105.24deg, #E9F1F7 -21.31%, rgba(255, 255, 255, 0.37) 117.37%)',
-        boxShadow:
-          'inset -2px -2px 2px #FFFFFF, inset 2px 2px 2px rgba(0, 0, 0, 0.15)',
+          'linear-gradient(94.45deg, rgba(221, 226, 228, 0.47) -23.58%, rgba(241, 247, 251, 0.38303) 15.25%, #FEFEFE 101.84%)',
+        boxShadow: 'inset 0px -2px 2px #FFFFFF, inset 2px 1px 2px #D4E1E8',
       };
 };
